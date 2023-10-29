@@ -20,25 +20,25 @@ import static org.junit.Assert.assertEquals;
  **/
 
 public class LoginStepDefinition {
-    @Given("I am on the Login page")
+    @Given("User is on the Login page")
     public void navigateToLogin() {
         pages().getNavigationBar()
                 .clickOnNavOption(LOG_IN);
     }
 
-    @When("I login with username {string} and password {string}")
+    @When("User logins with username {string} and password {string}")
     public void loginWithUsernameAndPassword(String username, String password) {
         pages().getLoginPage()
                 .login(username, password);
     }
 
-    @When("I login with {string} user")
+    @When("{string} user logins with valid credentials")
     public void login(String user) {
         pages().getLoginPage()
                 .login(User.valueOf(user));
     }
 
-    @Then("The greeting message should visible with the {string}'s username")
+    @Then("The user should see the greeting message with the {string}'s username")
     public void checkWelcomeMessage(String user) {
         assertEquals(
                 "Welcome " + User.valueOf(user).getUsername(),
@@ -46,7 +46,7 @@ public class LoginStepDefinition {
         );
     }
 
-    @Then("An alert for incorrect login credentials should visible")
+    @Then("The user should see the alert for incorrect login credentials")
     public void checkAlertErrorMessage() {
         assertEquals(
                 uiComponents().getAlertComponent().switchToAlert().getText(),

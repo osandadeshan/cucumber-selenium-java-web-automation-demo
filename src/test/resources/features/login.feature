@@ -3,9 +3,9 @@ Feature: User Login
 
   @smoke
   Scenario Outline: User logins with valid credentials
-    Given I am on the Login page
-    When I login with "<user>" user
-    Then The greeting message should visible with the "<user>"'s username
+    Given User is on the Login page
+    When "<user>" user logins with valid credentials
+    Then The user should see the greeting message with the "<user>"'s username
 
     Examples:
       | user        |
@@ -15,9 +15,9 @@ Feature: User Login
 
   @regression
   Scenario Outline: User cannot login with invalid credentials
-    Given I am on the Login page
-    When I login with username "<username>" and password "<password>"
-    Then An alert for incorrect login credentials should visible
+    Given User is on the Login page
+    When User logins with username "<username>" and password "<password>"
+    Then The user should see the alert for incorrect login credentials
 
     Examples:
       | username | password |

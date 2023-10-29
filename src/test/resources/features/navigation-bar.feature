@@ -3,9 +3,9 @@ Feature: Navigation Bar
 
   @smoke
   Scenario Outline: User can see the Navigation Bar options
-    Given The Navigation Bar is available
-    When I check the Navigation Bar option "<navigationBarOption>"
-    Then The Navigation Bar option should visible
+    Given The Navigation Bar is on the top of the page
+    When User checks the Navigation Bar option "<navigationBarOption>"
+    Then The user should see the Navigation Bar option
 
     Examples:
       | navigationBarOption |
@@ -18,9 +18,9 @@ Feature: Navigation Bar
 
   @regression
   Scenario Outline: User can see the Navigation Bar option routes
-    Given The Navigation Bar is available
-    When I check the Navigation Bar option "<navigationBarOption>"
-    Then The Navigation Bar option should route to "<navigationBarOptionUrl>"
+    Given The Navigation Bar is on the top of the page
+    When User checks the Navigation Bar option "<navigationBarOption>"
+    Then The user should see the Navigation Bar option routes to "<navigationBarOptionUrl>"
 
     Examples:
       | navigationBarOption | navigationBarOptionUrl |

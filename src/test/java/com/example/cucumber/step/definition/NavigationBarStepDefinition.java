@@ -22,18 +22,18 @@ import static org.junit.Assert.assertTrue;
 public class NavigationBarStepDefinition {
     private String navigationBarOption;
 
-    @Given("The Navigation Bar is available")
+    @Given("The Navigation Bar is on the top of the page")
     public void checkNavigationBarVisibility() {
         pages().getNavigationBar()
                 .checkNavigationBarVisibility();
     }
 
-    @When("I check the Navigation Bar option {string}")
+    @When("User checks the Navigation Bar option {string}")
     public void setNavigationBarOption(String navigationBarOption) {
         this.navigationBarOption = navigationBarOption;
     }
 
-    @Then("The Navigation Bar option should visible")
+    @Then("The user should see the Navigation Bar option")
     public void checkNavigationBarOptionIsVisible() {
         assertTrue(
                 pages().getNavigationBar()
@@ -42,7 +42,7 @@ public class NavigationBarStepDefinition {
         );
     }
 
-    @Then("The Navigation Bar option should route to {string}")
+    @Then("The user should see the Navigation Bar option routes to {string}")
     public void checkNavigationBarOptionRoutine(String url) {
         assertEquals(
                 APPLICATION_URL + url,
