@@ -1,8 +1,8 @@
-# Selenium Cucumber Demo
+# Cucumber Selenium Java Web Automation Demo
 
 Cucumber code example - A custom framework that runs automated tests written in behaviour driven development (BDD) style.
 
-## Cucumber Introduction:
+## Cucumber Introduction
 
 Cucumber is a tool based on Behavior Driven Development (BDD) framework which is used to write acceptance tests for web application. It allows automation of functional validation in easily readable and understandable format (like plain English) to Business Analysts, Developers, Testers, etc. Cucumber feature files can serve as a good document for all. There are many other tools like JBehave which also support BDD framework. Initially Cucumber was implemented in Ruby and then extended to Java framework. Both the tools support native JUnit.
 
@@ -10,11 +10,11 @@ Behavior Driven Development is extension of Test Driven Development, and it's us
 
 Cucumber can be used along with Selenium, Watir, and Capybara etc. Cucumber supports many other languages like Perl, PHP, Python, .Net etc. In this tutorial I will concentrate on Cucumber with Java as a language.
 
-***1) Feature Files:***
+**1) Feature Files:**
 
 Feature files are essential part of cucumber which are used to write test automation steps or acceptance tests. This can be used as live document. The steps are the application specification. All the feature files ends with .feature extension.
 
-***2) Scenario:***
+**2) Scenario:**
 
 Basically a scenario represents a particular functionality which is under test. By seeing the scenario user should be able to understand the intent behind the scenario and what the test is all about. Each scenario should follow given, when and then format. This language is called as “Gherkin”. Gherkin is designed to be easy to learn by non-programmers, yet structured enough to allow concise description of examples to illustrate business rules in most real-world domains.
 In Gherkin, each line that isn't blank has to start with a Gherkin keyword, followed by any text you like. The main keywords are:
@@ -30,12 +30,26 @@ Background: Whenever any step is required to perform in each scenario then those
 
 **And:** And is used to combine two or more same type of action.
 
-***3) Runner:***
+**3) Runner:**
 
 To run the specific feature file cucumber uses standard Junit Runner and specify tags in @Cucumber. Options. Multiple tags can be used, separated by comma. 
 
-## How to run tests
+## Executing Cucumber Tests
 
-Execute ***`mvn clean test`*** on the terminal.
+**1) To run all the tests in Chrome browser against the QA environment**
 
-After the execution is completed, you will be able to see the report at "***target/cucumber-reports/report.html***".
+   Execute ***`mvn clean test -Pchrome,qa`*** on the terminal.
+
+**2) To run all the smoke tests in Firefox browser against the QA environment**
+   
+   Execute ***`mvn clean test -Pfirefox,qa -Dcucumber.filter.tags="@smoke"`*** on the terminal.
+
+## Test Reporting
+
+After the execution is completed, you will be able to see the report at "***target/cucumber-reports/cucumber.html***".
+
+## License
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/License_icon-mit-2.svg/2000px-License_icon-mit-2.svg.png" alt="MIT License" width="100" height="100"/> [MIT License](https://opensource.org/licenses/MIT)
+
+## Copyright
+Copyright 2023 [MaxSoft](https://maxsoftlk.github.io/).
