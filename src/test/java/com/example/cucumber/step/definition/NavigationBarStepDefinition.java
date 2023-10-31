@@ -6,7 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import static com.example.cucumber.common.constant.ApplicationConstants.APPLICATION_URL;
-import static com.example.cucumber.step.definition.BaseStepDefinition.pages;
+import static com.example.cucumber.step.definition.UIProvider.pages;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

@@ -6,8 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import static com.example.cucumber.common.constant.NavigationBarOption.LOG_IN;
-import static com.example.cucumber.step.definition.BaseStepDefinition.pages;
-import static com.example.cucumber.step.definition.BaseStepDefinition.uiComponents;
+import static com.example.cucumber.step.definition.UIProvider.pages;
+import static com.example.cucumber.step.definition.UIProvider.uiComponents;
 import static org.junit.Assert.assertEquals;
 
 /**

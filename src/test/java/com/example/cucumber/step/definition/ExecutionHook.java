@@ -1,7 +1,5 @@
 package com.example.cucumber.step.definition;
 
-import com.example.cucumber.common.PageProvider;
-import com.example.cucumber.common.UiComponentProvider;
 import com.example.cucumber.util.driver.WebDriverFactory;
 import com.example.cucumber.util.driver.WebDriverService;
 import io.cucumber.java.After;
@@ -18,12 +16,12 @@ import static com.example.cucumber.util.driver.WebDriverHolder.setDriver;
  * Project Name    : cucumber-selenium-java-web-automation-demo
  * Developer       : Osanda Deshan
  * Version         : 1.0.0
- * Date            : 29/10/23
- * Time            : 8:19 PM
+ * Date            : 31/10/23
+ * Time            : 12:56 AM
  * Description     :
  **/
 
-public class BaseStepDefinition {
+public class ExecutionHook {
     private final WebDriverService driverService = new WebDriverFactory().getDriverService();
 
     @Before
@@ -40,13 +38,5 @@ public class BaseStepDefinition {
             scenario.attach(screenshot, "image/png", "Screenshot on failure");
         }
         driverService.closeDriver();
-    }
-
-    public static PageProvider pages() {
-        return new PageProvider(getDriver());
-    }
-
-    public static UiComponentProvider uiComponents() {
-        return new UiComponentProvider(getDriver());
     }
 }
