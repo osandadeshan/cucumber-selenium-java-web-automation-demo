@@ -1,6 +1,6 @@
 package com.example.cucumber.common.constant;
 
-import static com.example.cucumber.util.Reader.getEnvironmentConfig;
+import static com.example.cucumber.util.PropertyReader.getEnvironmentConfig;
 
 /**
  * Project Name    : cucumber-selenium-java-web-automation-demo
