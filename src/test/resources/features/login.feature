@@ -1,5 +1,5 @@
 @login
-Feature: User Login
+Feature: Login
 
   @smoke
   Scenario Outline: User logins with valid credentials

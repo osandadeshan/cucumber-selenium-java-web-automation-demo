@@ -11,17 +11,16 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
-        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <maven.shade.plugin.version>3.5.0</maven.shade.plugin.version>
-        <selenium.java.version>4.10.0</selenium.java.version>
-        <webdrivermanager.version>5.6.0</webdrivermanager.version>
-        <cucumber.java.version>7.14.0</cucumber.java.version>
-        <cucumber.junit.version>7.14.0</cucumber.junit.version>
-        <cucumber.picocontainer.version>7.14.0</cucumber.picocontainer.version>
-        <cucumber.reporting.version>5.7.5</cucumber.reporting.version>
-        <log4j.api.version>2.20.0</log4j.api.version>
-        <log4j.core.version>2.20.0</log4j.core.version>
+        <maven.surefire.plugin.version>3.5.5</maven.surefire.plugin.version>
+        <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
+        <maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
+        <selenium.java.version>4.41.0</selenium.java.version>
+        <cucumber.java.version>7.34.2</cucumber.java.version>
+        <cucumber.junit.version>7.34.2</cucumber.junit.version>
+        <cucumber.picocontainer.version>7.34.2</cucumber.picocontainer.version>
+        <cucumber.reporting.version>5.10.2</cucumber.reporting.version>
+        <log4j.api.version>2.25.3</log4j.api.version>
+        <log4j.core.version>2.25.3</log4j.core.version>
     </properties>
 
     <profiles>
@@ -164,11 +163,6 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.java.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>${webdrivermanager.version}</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
