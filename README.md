@@ -56,16 +56,15 @@ This project automatically tracks and reports E2E automation coverage per featur
 
 **1. Register your features in the CSV**
 
-Add a row for every feature file in `scripts/test-coverage-report/feature-coverage.csv`:
+Add a row for every feature file in `planned-automation-tests.csv`:
 
 ```csv
-feature,total_scenarios
+Feature,Planned Automation Test Count
 Login,6
 Navigation Bar,12
-Checkout,8
 ```
 
-Each `feature` value must match the name of its corresponding `.feature` file (without the extension). The `total_scenarios` value is the planned scenario count — how many E2E scenarios you intend to automate for that feature.
+Each `Feature` value must match the name of its corresponding `Feature:` name in the `.feature` file. The `Planned Automation Test Count` value is the planned scenario count — how many E2E scenarios you intend to automate for that feature.
 
 **2. Keep it updated**
 
@@ -77,7 +76,7 @@ The following must be in place for the pipeline to generate the report:
 
 | Requirement | Details |
 |---|---|
-| `feature-coverage.csv` | Populated with all feature names and planned counts |
+| `planned-automation-tests.csv` | Populated with all feature names and planned counts |
 | `GITHUB_TOKEN` | Automatically provided by GitHub Actions — no manual setup needed |
 | `GITHUB_REPOSITORY` | Automatically provided by GitHub Actions — no manual setup needed |
 | `.feature` files | Present under `src/test/resources/features/` |
