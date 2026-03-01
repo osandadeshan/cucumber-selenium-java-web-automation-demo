@@ -150,11 +150,16 @@ jobs:
           ref: master   # explicit — ensures we always get the merged HEAD, not a stale ref
 
       # 2️⃣ Set up Python
+      #    ⚠️ cache: 'pip' is intentionally omitted — it requires a requirements.txt or
+      #    pyproject.toml to exist, and will error if neither is found. Since we install
+      #    a single lightweight package (requests), caching adds no meaningful benefit here.
+      #    If you later add scripts/test-coverage-report/requirements.txt, you can restore:
+      #      cache: 'pip'
+      #      cache-dependency-path: 'scripts/test-coverage-report/requirements.txt'
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       # 3️⃣ Install dependencies
       - name: Install Python dependencies
