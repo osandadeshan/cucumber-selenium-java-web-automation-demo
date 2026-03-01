@@ -30,3 +30,4 @@ Feature: Navigation Bar
       | CART                | cart.html              |
       | LOG_IN              | #                      |
       | SIGN_UP             | #                      |
+
