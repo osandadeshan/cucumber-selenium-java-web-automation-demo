@@ -58,7 +58,7 @@ jobs:
           sudo apt-get install -y google-chrome-stable
 
       - name: Run Tests
-        run: mvn clean test -Pchrome,qa
+        run: mvn clean test -Pheadless-chrome,qa
 
       - name: Upload Cucumber Report
         uses: actions/upload-artifact@v4
