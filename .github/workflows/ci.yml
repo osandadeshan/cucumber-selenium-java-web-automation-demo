@@ -136,13 +136,18 @@ jobs:
     name: Deploy Feature Coverage to GitHub Pages
     runs-on: ubuntu-latest
     needs: test
+    # ✅ Only runs on push to master — treated as a completely fresh, independent event.
+    # Does NOT depend on the report job. Each job runs on its own runner, so
+    # artifacts/ from other jobs do not carry over — we regenerate everything here.
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     permissions:
       contents: write
 
     steps:
-      # 1️⃣ Checkout repo
+      # 1️⃣ Checkout the latest master (post-merge state)
       - uses: actions/checkout@v4
+        with:
+          ref: master   # explicit — ensures we always get the merged HEAD, not a stale ref
 
       # 2️⃣ Set up Python
       - name: Set up Python
@@ -155,23 +160,42 @@ jobs:
       - name: Install Python dependencies
         run: pip install requests
 
-      # 4️⃣ Generate Feature Coverage dynamically
+      # 4️⃣ Generate Feature Coverage dynamically from the freshly merged master
       - name: Generate Feature Coverage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # expose if generate_coverage.py calls GitHub API
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           mkdir -p artifacts
           python scripts/test-coverage-report/generate_coverage.py
 
-      # 5️⃣ Prepare folder for GitHub Pages
+      # 5️⃣ Verify the HTML was actually produced before trying to deploy
+      #    If this step fails, the deploy is aborted with a clear error rather
+      #    than silently publishing an empty/README page.
+      - name: Verify coverage report was generated
+        run: |
+          if [ ! -f artifacts/feature-coverage.html ]; then
+            echo "❌ artifacts/feature-coverage.html was not generated. Aborting deploy."
+            exit 1
+          fi
+          echo "✅ feature-coverage.html found ($(wc -c < artifacts/feature-coverage.html) bytes)"
+
+      # 6️⃣ Prepare folder for GitHub Pages
       - name: Prepare GitHub Pages content
         run: |
           mkdir -p pages
-          # Copy generated HTML to pages folder as index.html
           cp artifacts/feature-coverage.html pages/index.html
+          # Optional: copy any other assets (CSS, JS, images) if your report references them
+          # cp -r artifacts/assets pages/assets
 
-      # 6️⃣ Deploy to GitHub Pages
+      # 7️⃣ Deploy to GitHub Pages
+      #    force_orphan: true  → gh-pages branch has only the latest snapshot,
+      #    no git history bloat from every merge commit.
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: pages
           publish_branch: gh-pages
+          force_orphan: true          # keeps gh-pages branch clean; no history accumulation
+          commit_message: "chore: update feature coverage report [skip ci]"
