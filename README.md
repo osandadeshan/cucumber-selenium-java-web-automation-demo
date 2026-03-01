@@ -109,6 +109,8 @@ Hosted at `https://<your-org>.github.io/<repo-name>/`, the dashboard updates aut
 - **Coverage tier filter** — filter by ≥ 90% 🟢, 80–89% 🟡, or < 80% 🔴
 - **CSV warning** — a banner and inline row flag highlight any feature file not registered in the CSV
 
+Read more: [Medium Article](https://medium.com/automationmaster/my-engineering-manager-asked-for-a-test-coverage-dashboard-heres-what-i-built-55b81b789327)
+
 ## License
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/License_icon-mit-2.svg/2000px-License_icon-mit-2.svg.png" alt="MIT License" width="100" height="100"/> [MIT License](https://opensource.org/licenses/MIT)
 
