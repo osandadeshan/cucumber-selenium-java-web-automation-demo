@@ -155,6 +155,10 @@ jobs:
           mkdir -p artifacts
           python scripts/test-coverage-report/generate_coverage.py
 
+      - name: Prepare GitHub Pages content
+        run: |
+          cp artifacts/feature-coverage.html artifacts/index.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
