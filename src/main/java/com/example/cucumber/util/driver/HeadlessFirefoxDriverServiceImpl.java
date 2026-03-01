@@ -1,6 +1,5 @@
 package com.example.cucumber.util.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -24,7 +23,6 @@ public class HeadlessFirefoxDriverServiceImpl implements WebDriverService {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.addArguments("--headless");
 
-        WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver(firefoxOptions);
         driver.manage()
                 .timeouts()

@@ -1,7 +1,7 @@
 package com.example.cucumber.util.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 
 import static com.example.cucumber.common.constant.CommonConstants.IMPLICIT_WAIT_IN_SECONDS;
 
@@ -19,7 +19,7 @@ public class EdgeDriverServiceImpl implements WebDriverService {
 
     @Override
     public void spinUpDriver() {
-        driver = WebDriverManager.edgedriver().create();
+        driver = new EdgeDriver();
         driver.manage()
                 .timeouts()
                 .implicitlyWait(IMPLICIT_WAIT_IN_SECONDS);

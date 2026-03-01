@@ -1,7 +1,7 @@
 package com.example.cucumber.util.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static com.example.cucumber.common.constant.CommonConstants.IMPLICIT_WAIT_IN_SECONDS;
 
@@ -19,7 +19,7 @@ public class FirefoxDriverServiceImpl implements WebDriverService {
 
     @Override
     public void spinUpDriver() {
-        driver = WebDriverManager.firefoxdriver().create();
+        driver = new FirefoxDriver();
         driver.manage()
                 .timeouts()
                 .implicitlyWait(IMPLICIT_WAIT_IN_SECONDS);

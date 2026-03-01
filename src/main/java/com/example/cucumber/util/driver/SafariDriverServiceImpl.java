@@ -1,7 +1,7 @@
 package com.example.cucumber.util.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 import static com.example.cucumber.common.constant.CommonConstants.IMPLICIT_WAIT_IN_SECONDS;
 
@@ -19,7 +19,7 @@ public class SafariDriverServiceImpl implements WebDriverService {
 
     @Override
     public void spinUpDriver() {
-        driver = WebDriverManager.safaridriver().create();
+        driver = new SafariDriver();
         driver.manage()
                 .timeouts()
                 .implicitlyWait(IMPLICIT_WAIT_IN_SECONDS);
