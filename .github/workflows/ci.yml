@@ -2,6 +2,8 @@ name: Cucumber-Selenium Automation CI
 
 on:
   pull_request:
+    paths:
+      - 'src/test/resources/features/**'  # only run feature coverage if features change
   push:
     branches:
       - master
@@ -165,8 +167,6 @@ jobs:
           mkdir -p pages
           # Copy generated HTML to pages folder as index.html
           cp artifacts/feature-coverage.html pages/index.html
-          # Optional: copy other resources if needed
-          cp artifacts/feature-coverage.md pages/feature-coverage.md || true
 
       # 6️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
@@ -174,3 +174,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: pages
+          publish_branch: gh-pages
