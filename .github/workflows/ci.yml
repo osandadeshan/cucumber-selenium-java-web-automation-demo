@@ -157,10 +157,11 @@ jobs:
 
       - name: Prepare GitHub Pages content
         run: |
-          cp artifacts/feature-coverage.html artifacts/index.html
+          mkdir -p pages
+          cp artifacts/feature-coverage.html pages/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: artifacts
+          publish_dir: pages
