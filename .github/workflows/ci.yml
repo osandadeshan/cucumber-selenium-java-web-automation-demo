@@ -1,9 +1,7 @@
 name: Cucumber-Selenium Automation CI
 
 on:
-  pull_request:
-    paths:
-      - 'src/test/resources/features/**'  # only run feature coverage if features change
+  pull_request:        # ✅ Triggers on ALL PRs — build & test always run
   push:
     branches:
       - master
@@ -80,9 +78,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Always detect feature changes — works for both PR and push events
       - name: Detect Feature File Changes
         id: changes
-        if: github.event_name == 'pull_request'
         uses: dorny/paths-filter@v3
         with:
           filters: |
@@ -90,11 +88,17 @@ jobs:
               - 'src/test/resources/features/**/*.feature'
 
       - name: Set up Python
+        if: |
+          github.event_name == 'pull_request' &&
+          steps.changes.outputs.features == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install Python Dependencies
+        if: |
+          github.event_name == 'pull_request' &&
+          steps.changes.outputs.features == 'true'
         run: pip install requests
 
       - name: Generate Feature Coverage
@@ -124,6 +128,12 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python scripts/test-coverage-report/post_feature_coverage_comment.py
+
+      - name: Skip notice
+        if: |
+          github.event_name == 'pull_request' &&
+          steps.changes.outputs.features == 'false'
+        run: echo "⏭️  No feature file changes detected — skipping coverage report and PR comment."
 
   # ==========================================
   # 4️⃣ DEPLOY STAGE
