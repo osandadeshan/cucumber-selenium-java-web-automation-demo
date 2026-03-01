@@ -139,27 +139,36 @@ jobs:
       contents: write
 
     steps:
+      # 1️⃣ Checkout repo
       - uses: actions/checkout@v4
 
-      - name: Set up Python (cached)
+      # 2️⃣ Set up Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Install Dependencies
+      # 3️⃣ Install dependencies
+      - name: Install Python dependencies
         run: pip install requests
 
+      # 4️⃣ Generate Feature Coverage dynamically
       - name: Generate Feature Coverage
         run: |
           mkdir -p artifacts
           python scripts/test-coverage-report/generate_coverage.py
 
+      # 5️⃣ Prepare folder for GitHub Pages
       - name: Prepare GitHub Pages content
         run: |
           mkdir -p pages
+          # Copy generated HTML to pages folder as index.html
           cp artifacts/feature-coverage.html pages/index.html
+          # Optional: copy other resources if needed
+          cp artifacts/feature-coverage.md pages/feature-coverage.md || true
 
+      # 6️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
