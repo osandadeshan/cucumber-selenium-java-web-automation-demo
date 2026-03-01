@@ -53,7 +53,7 @@ jobs:
           cache: maven
 
       - name: Run Tests
-        run: mvn -B test
+        run: mvn clean test -Pchrome,qa
 
       - name: Upload Cucumber Report
         uses: actions/upload-artifact@v4
