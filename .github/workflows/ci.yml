@@ -1,9 +1,7 @@
 name: Cucumber-Selenium Automation CI
 
 on:
-  pull_request:
-    paths:
-      - 'src/test/resources/features/**'  # only run feature coverage if features change
+  pull_request:        # ✅ Triggers on ALL PRs — build & test always run
   push:
     branches:
       - master
@@ -19,9 +17,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
-    outputs:
-      cache-key: ${{ steps.cache-maven.outputs.cache-hit }}
 
     steps:
       - uses: actions/checkout@v4
@@ -66,8 +61,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-report
-          path: |
-            target/cucumber-reports/**
+          path: target/cucumber-reports/**
           if-no-files-found: ignore
 
   # ==========================================
@@ -84,9 +78,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Always detect feature changes — works for both PR and push events
       - name: Detect Feature File Changes
         id: changes
-        if: github.event_name == 'pull_request'
         uses: dorny/paths-filter@v3
         with:
           filters: |
@@ -94,11 +88,17 @@ jobs:
               - 'src/test/resources/features/**/*.feature'
 
       - name: Set up Python
+        if: |
+          github.event_name == 'pull_request' &&
+          steps.changes.outputs.features == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install Python Dependencies
+        if: |
+          github.event_name == 'pull_request' &&
+          steps.changes.outputs.features == 'true'
         run: pip install requests
 
       - name: Generate Feature Coverage
@@ -129,6 +129,12 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python scripts/test-coverage-report/post_feature_coverage_comment.py
 
+      - name: Skip notice
+        if: |
+          github.event_name == 'pull_request' &&
+          steps.changes.outputs.features == 'false'
+        run: echo "⏭️  No feature file changes detected — skipping coverage report and PR comment."
+
   # ==========================================
   # 4️⃣ DEPLOY STAGE
   # ==========================================
@@ -136,48 +142,46 @@ jobs:
     name: Deploy Feature Coverage to GitHub Pages
     runs-on: ubuntu-latest
     needs: test
-    # ✅ Only runs on push to master — treated as a completely fresh, independent event.
-    # Does NOT depend on the report job. Each job runs on its own runner, so
-    # artifacts/ from other jobs do not carry over — we regenerate everything here.
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     permissions:
       contents: write
 
     steps:
-      # 1️⃣ Checkout the latest master (post-merge state)
       - uses: actions/checkout@v4
         with:
-          ref: master   # explicit — ensures we always get the merged HEAD, not a stale ref
+          ref: master
+          fetch-depth: 0    # needed by dorny/paths-filter to diff against previous commit
 
-      # 2️⃣ Set up Python
-      #    ⚠️ cache: 'pip' is intentionally omitted — it requires a requirements.txt or
-      #    pyproject.toml to exist, and will error if neither is found. Since we install
-      #    a single lightweight package (requests), caching adds no meaningful benefit here.
-      #    If you later add scripts/test-coverage-report/requirements.txt, you can restore:
-      #      cache: 'pip'
-      #      cache-dependency-path: 'scripts/test-coverage-report/requirements.txt'
+      # Detect whether any feature files were part of this merge
+      - name: Detect Feature File Changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            features:
+              - 'src/test/resources/features/**/*.feature'
+
       - name: Set up Python
+        if: steps.changes.outputs.features == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3️⃣ Install dependencies
       - name: Install Python dependencies
+        if: steps.changes.outputs.features == 'true'
         run: pip install requests
 
-      # 4️⃣ Generate Feature Coverage dynamically from the freshly merged master
       - name: Generate Feature Coverage
+        if: steps.changes.outputs.features == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # expose if generate_coverage.py calls GitHub API
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           mkdir -p artifacts
           python scripts/test-coverage-report/generate_coverage.py
 
-      # 5️⃣ Verify the HTML was actually produced before trying to deploy
-      #    If this step fails, the deploy is aborted with a clear error rather
-      #    than silently publishing an empty/README page.
       - name: Verify coverage report was generated
+        if: steps.changes.outputs.features == 'true'
         run: |
           if [ ! -f artifacts/feature-coverage.html ]; then
             echo "❌ artifacts/feature-coverage.html was not generated. Aborting deploy."
@@ -185,22 +189,22 @@ jobs:
           fi
           echo "✅ feature-coverage.html found ($(wc -c < artifacts/feature-coverage.html) bytes)"
 
-      # 6️⃣ Prepare folder for GitHub Pages
       - name: Prepare GitHub Pages content
+        if: steps.changes.outputs.features == 'true'
         run: |
           mkdir -p pages
           cp artifacts/feature-coverage.html pages/index.html
-          # Optional: copy any other assets (CSS, JS, images) if your report references them
-          # cp -r artifacts/assets pages/assets
 
-      # 7️⃣ Deploy to GitHub Pages
-      #    force_orphan: true  → gh-pages branch has only the latest snapshot,
-      #    no git history bloat from every merge commit.
       - name: Deploy to GitHub Pages
+        if: steps.changes.outputs.features == 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: pages
           publish_branch: gh-pages
-          force_orphan: true          # keeps gh-pages branch clean; no history accumulation
+          force_orphan: true
           commit_message: "chore: update feature coverage report [skip ci]"
+
+      - name: Skip notice
+        if: steps.changes.outputs.features == 'false'
+        run: echo "⏭️  No feature file changes detected — skipping GitHub Pages deploy."
