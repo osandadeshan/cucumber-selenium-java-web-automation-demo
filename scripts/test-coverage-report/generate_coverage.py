@@ -11,7 +11,7 @@ from zoneinfo import ZoneInfo
 # CONFIG
 # ==========================================================
 FEATURE_DIR = os.getenv("FEATURE_DIR", "src/test/resources/features")
-PLANNED_CSV = os.getenv("PLANNED_CSV", "planned-automation-tests.csv")
+PLANNED_CSV = os.getenv("PLANNED_CSV", "src/test/resources/features/planned-automation-tests.csv")
 
 OUTPUT_MD = "artifacts/feature-coverage.md"
 OUTPUT_HTML = "artifacts/feature-coverage.html"
@@ -191,6 +191,8 @@ def main():
             ))
             idx += 1
 
+    has_missing_features = bool(missing_from_csv_features)
+
     # ======================================================
     # TOTALS
     # ======================================================
@@ -219,6 +221,7 @@ def main():
         total_display = total if total is not None else "—"
         missing_display = missing if missing is not None else "—"
 
+        # Markdown rendering
         coverage_md = (
             format_coverage_md(coverage_str)
             if coverage_str != "N/A"
@@ -252,34 +255,26 @@ def main():
         </tr>
         """
 
-    md_warning_note = ""
+    # ======================================================
+    # WARNING FLAG
+    # ======================================================
+    warning_block_md = ""
+    warning_block_html = ""
 
-    if missing_from_csv_features:
-        md_warning_note = (
-            "\n\n"
+    if has_missing_features:
+        warning_block_md = (
             "> ⚠️ **Attention:** Some feature files exist but are not included in "
             "`planned-automation-tests.csv`. Please define their planned automation test count "
             "to ensure accurate coverage reporting.\n"
         )
 
-    html_warning_note = ""
-
-    if missing_from_csv_features:
-        html_warning_note = """
-        <div style="
-            margin:20px 0;
-            padding:12px;
-            background:#fff3cd;
-            border-left:6px solid #ff9800;
-            color:#664d03;
-            border-radius:6px;
-            font-size:14px;
-        ">
-            <strong style="color:#e67e22;">⚠️ Attention:</strong>
+        warning_block_html = """
+            <div class="warning-box">
+            <strong>⚠️ Attention:</strong>
             Some feature files exist but are not included in
             <code class="inline-code">planned-automation-tests.csv</code>.
             Please define their planned automation test count to ensure accurate coverage reporting.
-        </div>
+            </div>
         """
 
     # ======================================================
@@ -297,7 +292,7 @@ def main():
         total_missing=total_missing,
         generated_at=generated_at,
         table_rows=md_table_rows,
-        warning_note=md_warning_note
+        warning_block=warning_block_md
     )
 
     html_output = html_template.substitute(
@@ -308,7 +303,7 @@ def main():
         total_missing=total_missing,
         generated_at=generated_at,
         table_rows=html_table_rows,
-        warning_note=html_warning_note
+        warning_block=warning_block_html
     )
 
     write_reports(md_output, html_output)
