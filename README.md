@@ -56,7 +56,7 @@ This project automatically tracks and reports E2E automation coverage per featur
 
 **1. Register your features in the CSV**
 
-Add a row for every feature file in `planned-automation-tests.csv`:
+Add a row for every feature file in `src/test/resources/features/planned-automation-tests.csv`:
 
 ```csv
 Feature,Planned Automation Test Count
