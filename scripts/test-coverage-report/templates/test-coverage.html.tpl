@@ -165,6 +165,18 @@ th.sortable.desc .arrow::after { content:" ↓"; }
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     border: 1px solid #e5e7eb;
 }
+.warning-box {
+    margin: 20px 0;
+    padding: 14px;
+    background: #fff3cd;
+    border-left: 6px solid #ff9800;
+    color: #664d03;
+    border-radius: 6px;
+    font-size: 14px;
+}
+.warning-box strong {
+    color: #e67e22;
+}
 </style>
 
 <script>
@@ -335,7 +347,7 @@ function updateRowNumbers() {
 </thead>
 <tbody>
 ${table_rows}
-${warning_note}
+${warning_block}
 </tbody>
 </table>
 </div>
