@@ -86,6 +86,7 @@ jobs:
           filters: |
             features:
               - 'src/test/resources/features/**/*.feature'
+              - 'src/test/resources/features/planned-automation-tests.csv'
 
       - name: Set up Python
         if: |
@@ -160,6 +161,7 @@ jobs:
           filters: |
             features:
               - 'src/test/resources/features/**/*.feature'
+              - 'src/test/resources/features/planned-automation-tests.csv'
 
       - name: Set up Python
         if: steps.changes.outputs.features == 'true'

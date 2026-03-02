@@ -85,9 +85,9 @@ The following must be in place for the pipeline to generate the report:
 
 The CI pipeline handles everything automatically.
 
-**On a pull request** — if any `.feature` file changed, the pipeline generates a coverage report and posts it as a comment directly on the PR. No feature file changes? All coverage steps are silently skipped. Build and test still run as normal.
+**On a pull request** — if any `.feature` file or `planned-automation-tests.csv` changed, the pipeline generates a coverage report and posts it as a comment directly on the PR. No feature file changes? All coverage steps are silently skipped. Build and test still run as normal.
 
-**On merge to master** — if the merged PR contained feature file changes, the pipeline regenerates the report from the latest codebase and publishes the updated dashboard to GitHub Pages automatically.
+**On merge to master** — if the merged PR contained feature file or `planned-automation-tests.csv` changes, the pipeline regenerates the report from the latest codebase and publishes the updated dashboard to GitHub Pages automatically.
 
 ### What You Get
 
